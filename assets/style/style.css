@@ -1,0 +1,111 @@
+html, body{
+    height: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+*{
+    font-family: Arial, Helvetica, sans-serif;
+    color: #333;
+    /* calculate width and height of column with padding */
+    box-sizing: border-box;
+}
+
+.signInContainer{
+    position: relative;
+    background-color: #0000007a;
+    height: 100vh;
+    /* take up all available width in page */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.imgContainer{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    margin: 20px 0;
+    overflow: hidden;
+    z-index: -1;
+}
+
+.login-background{
+    position: absolute;
+    width: 100%;
+    height: 100%
+}
+
+.column{
+    background-color: #000000cc;
+    border-radius: 10px;
+    min-height: 300px;
+    max-height: 100%;
+    width: 450px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0 1px 2px;
+    padding: 20px 35px;
+    /* make column scrollable */
+    overflow-y: auto;
+}
+
+.column form{
+    display: flex;
+    flex-direction: column;
+    padding-top: 24px;
+}
+
+.column form input[type="text"],
+.column form input[type="email"],
+.column form input[type="password"]{
+    font-size: 14px;
+    margin: 5px 0;
+    border: none;
+    background-color: #333;
+    border-radius: 2px;
+    height: 30px;
+}
+
+.column form input[type="submit"]{
+    background-color: #e50913;
+    color: #fff;
+    height: 45px;
+    width: 380px;
+    border: none;
+    border-radius: 3px;
+    font-weight: 500;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+.column .header{
+    padding: 20px 0;
+}
+
+.column h3{
+    color: white;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 32px;
+    margin: 0;
+    padding-top: 16px;
+}
+
+.column .header span{
+    font-size: 14px;
+    color: white;
+}
+
+.logo{
+    width: 175px;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+}
+
+.signInMessage{
+    font-size: 14px;
+    font-weight: 400;
+    text-decoration: none;
+    color: white;
+}
