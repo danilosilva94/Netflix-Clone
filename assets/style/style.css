@@ -61,6 +61,7 @@ html, body{
     margin: 5px 0;
     border: none;
     background-color: #333;
+    color: white;
     border-radius: 2px;
     height: 30px;
 }
@@ -108,4 +109,11 @@ html, body{
     font-weight: 400;
     text-decoration: none;
     color: white;
+}
+
+.errorMessage{
+    color: #e40913;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
 }
