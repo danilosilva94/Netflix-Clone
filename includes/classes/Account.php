@@ -26,6 +26,30 @@ class Account {
         }
     }
 
+    // Login
+    public function login($un, $pw){
+        //Compare password with encrypted password
+        $pw = md5($pw);
+
+        //Check database for username and password
+        $query = $this->con->prepare("SELECT * FROM users WHERE username = :un AND password = :pw");
+
+        // Fill in the placeholders
+        $query->bindValue(":un", $un);
+        $query->bindValue(":pw", $pw);
+
+        // Execute the query
+        $query->execute();
+
+        //Check number of rows
+        if($query->rowCount() == 1){
+            return true;
+        } else {
+            array_push($this->errorArray, Constants::$loginFailed);
+            return false;
+        }
+    }
+
     // Insert user details into database
     private function insertUserDetails($fn, $ln, $un, $em, $pw) {
         // Encrypt password
