@@ -16,6 +16,32 @@ class Account {
         $this->validateUsername($un);
         $this->validateEmails($em, $em2);
         $this->validatePasswords($pw, $pw2);
+
+        //Check if there are no errors
+        if(empty($this->errorArray)) {
+            // Insert into database
+            return $this->insertUserDetails($fn, $ln, $un, $em, $pw);
+        } else {
+            return false;
+        }
+    }
+
+    // Insert user details into database
+    private function insertUserDetails($fn, $ln, $un, $em, $pw) {
+        // Encrypt password
+        $encryptedPw = md5($pw);
+        // Default profile picture
+
+        $query = $this->con->prepare("INSERT INTO users (firstName, lastName, username, email, password) VALUES (:fn, :ln, :un, :em, :pw)");
+        // Fill in the placeholders
+        $query->bindValue(":fn", $fn);
+        $query->bindValue(":ln", $ln);
+        $query->bindValue(":un", $un);
+        $query->bindValue(":em", $em);
+        $query->bindValue(":pw", $encryptedPw);
+
+        // Execute the query
+        return $query->execute();
     }
 
     // Validate first name

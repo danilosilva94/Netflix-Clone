@@ -20,6 +20,14 @@ if (isset($_POST['submitButton'])) {
 
     //Register user
     $success = $account->register($firstName, $lastName, $username, $email, $email2, $password, $password2);
+
+    //Check if registration was successful
+    if ($success) {
+        //Store session
+        $_SESSION["userLoggedIn"] = $username;
+        //Redirect to index page
+        header("Location: index.php");
+    }
 }
 ?>
 
