@@ -11,6 +11,34 @@ html, body{
     box-sizing: border-box;
 }
 
+h3{
+    color: #e5e5e5;
+}
+
+a h3:hover{
+    color: #fff;
+    
+}
+
+a{
+    text-decoration: none;
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+    height: 10px; /* thinner scrollbar */
+    background-color: #141414; /* lighter color */
+}
+ 
+::-webkit-scrollbar-thumb {
+  background-color: #4a4a4a;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #555555; 
+}
+
 .wrapper{
     min-width: 1050px;
     min-height: 100%;
@@ -142,6 +170,20 @@ html, body{
     display: flex;
 }
 
+.previewContainer.small{
+    width: 230px;
+    height: 129px;
+    margin-right: 4px;
+    display: inline-flex;
+}
+
+.previewContainer.small img{
+    width: 100%;
+    height: 100%;
+    /* Prevent image from being stretched */
+    object-fit: cover;
+}
+
 .previewOverlay .mainDetails h3{
     color: #fff;
     font-size: 40px;
@@ -179,4 +221,16 @@ button i{
 .mainDetails button:hover{
     background-color: #000000cc;
     cursor: pointer;
+}
+
+.category{
+    display: flex;
+    flex-direction: column;
+    padding: 10px 0;;
+}
+
+.entities{
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
 }

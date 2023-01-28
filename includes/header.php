@@ -1,7 +1,9 @@
 <?php
 require_once("includes/config.php");
 require_once("includes/classes/PreviewProvider.php");
+require_once("includes/classes/CategoryContainers.php");
 require_once("includes/classes/Entity.php");
+require_once("includes/classes/EntityProvider.php");
 
 //Check if user is logged in
 if (!isset($_SESSION['userLoggedIn'])) {

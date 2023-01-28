@@ -4,6 +4,9 @@
 
     //Create new preview provider object
     $previewProvider = new PreviewProvider($con, $userLoggedIn);
+    echo $previewProvider->createPreviewVideo(null);
 
-    $previewProvider->createPreviewVideo(null);
+    //Show all categories
+    $containers = new CategoryContainers($con, $userLoggedIn);
+    echo $containers->showAllCategories();
 ?>
