@@ -34,8 +34,8 @@
                             <div class='mainDetails'>
                                 <h3>$name</h3>
                                 <div class='buttons'>
-                                    <button onclick='watchVideo($id)'><i class='fas fa-play'></i> Play</button>
-                                    <button onclick='volumeToggle(this)'><i class='fas fa-volume-mute'></i></button>
+                                    <button><i class='fas fa-play'></i> Play</button>
+                                    <button onClick='volumeToggle(this)'><i class='fas fa-volume-mute'></i></button>
                                 </div>
                             </div>
                         </div>

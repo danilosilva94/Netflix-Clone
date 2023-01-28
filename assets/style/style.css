@@ -11,6 +11,12 @@ html, body{
     box-sizing: border-box;
 }
 
+.wrapper{
+    min-width: 1050px;
+    min-height: 100%;
+    background-color: #141414;
+}
+
 .signInContainer{
     position: relative;
     background-color: #0000007a;
@@ -116,4 +122,61 @@ html, body{
     font-size: 14px;
     font-weight: bold;
     text-align: center;
+}
+
+.previewVideo, .previewImage{
+    width: 100%;
+}
+
+.previewOverlay{
+    width: 100%;
+    height: 100%;
+    background-color: #0000007a;
+    /* Allow an absolute positioned element to be positioned relative to the parent element */
+    position: absolute;
+}
+
+.previewContainer{
+    /* Allow an relative positioned element to be positioned relative to the parent element */
+    position: relative;
+    display: flex;
+}
+
+.previewOverlay .mainDetails h3{
+    color: #fff;
+    font-size: 40px;
+    margin: 15px 0;
+}
+
+.previewOverlay .mainDetails{
+    /* Allow a relative positioned element to be positioned relative to the parent element */
+    position: relative;
+    top: 35%;
+    margin-left: 50px;
+    display: flex;
+    flex-direction: column;
+}
+
+.mainDetails button{
+    background-color: #0000007a;
+    color: #fff;
+    border: none;
+    min-width: 150px;
+    padding: 0 38px;
+    height: 50px;
+    max-height: 50px;
+    font-size: 18px;
+    border-radius: 2px;
+    margin-bottom: 15px;
+    margin-right: 5px;
+}
+
+button i{
+    /* Allow button to inherit color from parent */
+    color: inherit;
+}
+
+.mainDetails button:hover{
+    background-color: #000000cc;
+    cursor: pointer;
 }
