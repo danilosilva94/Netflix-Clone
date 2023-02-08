@@ -4,25 +4,23 @@
         private $con, $sqlData;
 
         //Constructor
-        public function __construct($con, $sqlData){
+        public function __construct($con, $input){
             $this->con = $con;
 
             //Check if input is array
-            if(is_array($sqlData)){
+            if(is_array($input)){
                 //Assign input to array
-                $this->sqlData = $sqlData;
+                $this->sqlData = $input;
             } else{
                 //If input is not an array, get input from database
                 $query = $this->con->prepare("SELECT * FROM entities WHERE id=:id");
                 //Bind value
-                $query->bindValue(":id", $sqlData);
+                $query->bindValue(":id", $input);
                 //Execute query
                 $query->execute();
                 //Assign input to array
                 $this->sqlData = $query->fetch(PDO::FETCH_ASSOC);
             }
-
-            $this->sqlData = $sqlData;
         }
 
         //Get entity id
