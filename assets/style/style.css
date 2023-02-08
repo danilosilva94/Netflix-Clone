@@ -11,6 +11,40 @@ html, body{
     box-sizing: border-box;
 }
 
+h3{
+    color: #e5e5e5;
+}
+
+a h3:hover{
+    color: #fff;
+    
+}
+
+a{
+    text-decoration: none;
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+    height: 10px; /* thinner scrollbar */
+    background-color: #141414; /* lighter color */
+}
+ 
+::-webkit-scrollbar-thumb {
+  background-color: #4a4a4a;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #555555; 
+}
+
+.wrapper{
+    min-width: 1050px;
+    min-height: 100%;
+    background-color: #141414;
+}
+
 .signInContainer{
     position: relative;
     background-color: #0000007a;
@@ -116,4 +150,138 @@ html, body{
     font-size: 14px;
     font-weight: bold;
     text-align: center;
+}
+
+.previewVideo, .previewImage{
+    width: 100%;
+}
+
+.previewOverlay{
+    width: 100%;
+    height: 100%;
+    background-color: #0000007a;
+    /* Allow an absolute positioned element to be positioned relative to the parent element */
+    position: absolute;
+}
+
+.previewContainer{
+    /* Allow an relative positioned element to be positioned relative to the parent element */
+    position: relative;
+    display: flex;
+}
+
+.previewContainer.small{
+    width: 230px;
+    height: 129px;
+    margin-right: 4px;
+    display: inline-flex;
+}
+
+.previewContainer.small img{
+    width: 100%;
+    height: 100%;
+    /* Prevent image from being stretched */
+    object-fit: cover;
+}
+
+.previewOverlay .mainDetails h3{
+    color: #fff;
+    font-size: 40px;
+    margin: 15px 0;
+}
+
+.previewOverlay .mainDetails{
+    /* Allow a relative positioned element to be positioned relative to the parent element */
+    position: relative;
+    top: 35%;
+    margin-left: 50px;
+    display: flex;
+    flex-direction: column;
+}
+
+.mainDetails button{
+    background-color: #0000007a;
+    color: #fff;
+    border: none;
+    min-width: 150px;
+    padding: 0 38px;
+    height: 50px;
+    max-height: 50px;
+    font-size: 18px;
+    border-radius: 2px;
+    margin-bottom: 15px;
+    margin-right: 5px;
+}
+
+button i{
+    /* Allow button to inherit color from parent */
+    color: inherit;
+}
+
+.mainDetails button:hover{
+    background-color: #000000cc;
+    cursor: pointer;
+}
+
+.category{
+    display: flex;
+    flex-direction: column;
+    padding: 10px 0;;
+}
+
+.entities, .videos{
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+}
+
+.previewCategories {
+    padding: 0 50px;
+}
+
+.errorBanner{
+    color: #fff;
+    position: absolute;
+    top: 25%;
+    width: 100%;
+    text-align: center;
+    font-size: 18px;
+}
+
+.season{
+    display: flex;
+    flex-direction: column;
+    padding: 10px 0;
+}
+
+.episodeContainer{
+    display: inline-flex;
+    justify-content: center;
+    margin-right: 4px;
+}
+
+.episodeContainer .contents{
+    display: flex;
+    flex-direction: column;
+    width: 230px;
+}
+
+.episodeContainer img{
+    width: 230px;
+    height: 129px;
+    /* Prevent image from being stretched */
+    object-fit: cover;
+}
+
+.episodeContainer .videoInfo h4,
+.episodeContainer .videoInfo span{
+    color: #fff;
+    width: 100%;
+    /* Prevent text from overflowing */
+    white-space: normal;
+}
+
+.episodeContainer .videoInfo{
+    max-height: 200px;
+    overflow-y:auto
 }
