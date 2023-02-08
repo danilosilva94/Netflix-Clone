@@ -46,5 +46,56 @@
             //Return preview
             return $this->sqlData["preview"];
         }
+
+        //Get entity category
+        public function getCategoryId(){
+            //Return category
+            return $this->sqlData["categoryId"];
+        }
+
+        //Get seasons
+        public function getSeasons() {
+            //Get seasons from database
+            $query = $this->con->prepare("SELECT * FROM videos WHERE entityId=:id
+                                        AND isMovie=0 ORDER BY season, episode ASC");
+            //Bind value
+            $query->bindValue(":id", $this->getId());
+            //Execute query
+            $query->execute();
+            
+            //Create array
+            $seasons = array();
+            //Create array
+            $videos = array();
+
+            //Create variable
+            $currentSeason = null;
+
+            //Loop through query
+            while($row = $query->fetch(PDO::FETCH_ASSOC)) {
+                //Check if current season is not null and current season is not equal to row season
+                if($currentSeason != null && $currentSeason != $row["season"]) {
+                    //Add season to array
+                    $seasons[] = new Season($currentSeason, $videos);
+                    //Clear array
+                    $videos = array();
+                }
+                
+                //Assign current season to row season
+                $currentSeason = $row["season"];
+                //Add video to array
+                $videos[] = new Video($this->con, $row);
+    
+            }
+            
+            //Handle last season
+            //Check if array size is not equal to 0
+            if(sizeof($videos) != 0) {
+                //Add season to array
+                $seasons[] = new Season($currentSeason, $videos);
+            }
+            //Return seasons
+            return $seasons;
+        }
     }
 ?>

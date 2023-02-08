@@ -29,6 +29,28 @@ class CategoryContainers {
         return $html . "</div>";
     }
 
+    //Show specific category
+    public function showCategory($categoryId, $title = null) {
+        //Get category
+        $query = $this->con->prepare("SELECT * FROM categories WHERE id=:id");
+        //Bind value
+        $query->bindValue(":id", $categoryId);
+        //Execute query
+        $query->execute();
+
+        //Create html
+        $html = "<div class='previewCategories noScroll'>";
+
+        //Iterate through all categories
+        while($row = $query->fetch(PDO::FETCH_ASSOC)) {
+            //Get category and add to html
+            $html .= $this->getCategoryHtml($row, $title, true, true);
+        }
+
+        //Return html
+        return $html . "</div>";
+    }
+
     //Get category html
     private function getCategoryHtml($sqlData, $title, $tvShows, $movies) {
         //Get category id

@@ -6,6 +6,8 @@ require_once("includes/classes/Entity.php");
 require_once("includes/classes/EntityProvider.php");
 require_once("includes/classes/ErrorMessage.php");
 require_once("includes/classes/SeasonProvider.php");
+require_once("includes/classes/Video.php");
+require_once("includes/classes/Season.php");
 
 //Check if user is logged in
 if (!isset($_SESSION['userLoggedIn'])) {
