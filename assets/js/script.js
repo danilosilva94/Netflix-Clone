@@ -20,3 +20,115 @@ function previewEnded(){
     //Show the image
     $(".previewImage").toggle();
 }
+
+//Go to prevous page
+function goBack(){
+    window.history.back();
+}
+
+//Hide buttons timer
+function startHideTimer(){
+    var timeout = null;
+
+    //If the mouse is moved, clear the timeout
+    $(document).on("mousemove", function(){
+        //Reset timer
+        clearTimeout(timeout);
+
+        //Show the buttons
+        $(".watchNav").fadeIn();
+
+        //Set a timeout to hide the buttons
+        timeout = setTimeout(function(){
+            //Hide the buttons
+            $(".watchNav").fadeOut();
+        }, 2000);
+    });
+}
+
+//Initiate the video
+function initVideo(videoId, username){
+    startHideTimer();
+    setStartTime(videoId, username);
+    updateProgressTimer(videoId, username);
+}
+
+//Update the progress bar
+function updateProgressTimer(videoId, username){
+    //If video is not already in progress tablle, add it
+    addDuration(videoId, username);
+
+    //Update the progress bar every second
+    var timer;
+
+    //While the video is playing
+    $("video").on("playing", function(event){
+        //Clear timer on window
+        window.clearInterval(timer);
+
+        //Set new timer
+        timer = setInterval(function(){
+            //Take current time value of video and send it to updateProgress.php
+            updateProgress(videoId, username, event.target.currentTime);
+        }, 3000);
+
+        //On video end
+    }).on("ended", function(){
+        //Set finished
+        setFinished(videoId, username);
+
+        //Clear timer on window
+        window.clearInterval(timer);
+    });
+}
+
+//Add duration
+function addDuration(videoId, username){
+    $.post("ajax/addDuration.php", {videoId:videoId, username: username},  function(data){
+        //Check for errors
+        if(data !== null && data !== ""){
+            //Show error
+            alert(data);
+        }
+    });
+}
+
+//Update progress bar
+function updateProgress(videoId, username, progress){
+    //Send data to updateProgress.php
+    $.post("ajax/upgradeDuration.php", {videoId:videoId, username: username, progress: progress},  function(data){
+        //Check for errors
+        if(data !== null && data !== ""){
+            //Show error
+            alert(data);
+        }
+    });
+}
+
+//Set finished
+function setFinished(videoId, username){
+    $.post("ajax/setFinished.php", {videoId:videoId, username: username},  function(data){
+        //Check for errors
+        if(data !== null && data !== ""){
+            //Show error
+            alert(data);
+        }
+    });
+}
+
+//Set start time
+function setStartTime(videoId, username){
+    $.post("ajax/getProgress.php", {videoId:videoId, username: username},  function(data){
+        //Check for errors
+        if(isNaN(data)){
+            //Show error
+            alert(data);
+        }
+
+        //Set the video progress
+        $("video").on("canplay", function(){
+            this.currentTime = data;
+            $("video").off("canplay");
+        });
+    });
+}

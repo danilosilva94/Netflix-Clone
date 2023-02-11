@@ -62,5 +62,15 @@
             return $this->sqlData["episode"];
         }
 
+        //Increment views
+        public function incrementViews(){
+            //query to increment views
+            $query = $this->con->prepare("UPDATE videos SET views=views+1 WHERE id=:id");
+            //Bind value
+            $query->bindValue(":id", $this->getId());
+            //Execute query
+            $query->execute();
+        }
+
     }
 ?>
