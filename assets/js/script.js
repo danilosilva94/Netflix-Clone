@@ -1,3 +1,9 @@
+//Create function based on the scrolling of the page
+$(document).scroll(function(){
+    //Change the class of the top bar if the page is scrolled
+    $(".topBar").toggleClass("scrolled", $(this).scrollTop() > $(".topBar").height());
+})
+
 //Toggle video volume
 function volumeToggle(button) {
     //Get the value of the video's muted property

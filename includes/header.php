@@ -36,12 +36,12 @@ $userLoggedIn = $_SESSION['userLoggedIn'];
     <body>
         <div class="wrapper">
         
-        <div class="topBar">
-            <div class="logoContainer">
-                <a href="index.php">
-                    <img src="assets/images/logo.png" alt="">
-                </a>
-            </div>
-        </div>
+        <?php
+            //Check if nav bar must be hidden
+            if (!isset($hideNav)) {
+                //Include nav bar
+                include_once("includes/navBar.php");
+            }
+        ?>
 
         

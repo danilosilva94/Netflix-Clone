@@ -1,4 +1,7 @@
 <?php
+    //Set hide nav bar
+    $hideNav = true;
+    
     require_once("includes/header.php");
 
     //Show error if no id is passed
