@@ -132,3 +132,26 @@ function setStartTime(videoId, username){
         });
     });
 }
+
+//Restart video
+function restartVideo(){
+    //Set the video progress to 0
+    $("video")[0].currentTime = 0;
+    //Play the video
+    $("video")[0].play();
+
+    //Hide the replay button
+    $(".upNext").fadeOut();
+}
+
+//Watch video
+function watchVideo(videoId){
+    //Redirect to watch.php?id=videoId
+    window.location.href = "watch.php?id=" + videoId;
+}
+
+//Show the next video
+function showUpNext(){
+    //Fade in the up next container
+    $(".upNext").fadeIn();
+}

@@ -8,6 +8,7 @@ require_once("includes/classes/ErrorMessage.php");
 require_once("includes/classes/SeasonProvider.php");
 require_once("includes/classes/Video.php");
 require_once("includes/classes/Season.php");
+require_once("includes/classes/VideoProvider.php");
 
 //Check if user is logged in
 if (!isset($_SESSION['userLoggedIn'])) {
@@ -34,5 +35,13 @@ $userLoggedIn = $_SESSION['userLoggedIn'];
 
     <body>
         <div class="wrapper">
+        
+        <div class="topBar">
+            <div class="logoContainer">
+                <a href="index.php">
+                    <img src="assets/images/logo.png" alt="">
+                </a>
+            </div>
+        </div>
 
         

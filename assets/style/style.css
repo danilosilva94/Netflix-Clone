@@ -190,6 +190,12 @@ a{
     margin: 15px 0;
 }
 
+.previewOverlay .mainDetails h4{
+    color: #fff;
+    font-size: 20px;
+    margin: 15px 0;
+}
+
 .previewOverlay .mainDetails{
     /* Allow a relative positioned element to be positioned relative to the parent element */
     position: relative;
@@ -264,6 +270,7 @@ button i{
     display: flex;
     flex-direction: column;
     width: 230px;
+    position: relative;
 }
 
 .episodeContainer img{
@@ -309,4 +316,30 @@ button i{
     color: #fff;
     background-color: transparent;
     border: none;
+}
+
+.upNext{
+    height: 100%;
+    justify-content: center;
+}
+
+.upNextContainer{
+    padding: 0;
+}
+
+.upNextContainer h2,
+.upNextContainer h3{
+    color: #fff;
+}
+
+.watchNav{
+    z-index: 2;
+}
+
+.seen{
+    color: #2ecc71;
+    font-size: 26px;
+    position: absolute;
+    top: 5px;
+    left: 5px;
 }

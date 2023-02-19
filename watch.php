@@ -11,6 +11,9 @@
 
     //Increment views
     $video->incrementViews();
+
+    //Get up next video
+    $upNextVideo = VideoProvider::getUpNext($con, $video);
 ?>
 
 <!-- Video player -->
@@ -22,7 +25,22 @@
         <h1><?php echo $video->getTitle(); ?></h1>
     </div>
 
-    <video controls autoplay>
+    <div class="videoControls upNext" style="display: none;">
+        <button onclick="restartVideo();"><i class="fas fa-redo"></i></button>
+
+        <div class="upNextContainer">
+            <h2>Up Next:</h2>
+            <h3><?php echo $upNextVideo->getTitle(); ?></h3>
+            <h3><?php echo $upNextVideo->getSeasonAndEpisode(); ?></h3>
+
+            <button class="play" onclick="watchVideo(<?php echo $upNextVideo->getId(); ?>);">
+                <i class="fas fa-play"></i>
+                Play
+            </button>
+        </div>
+    </div>
+
+    <video controls autoplay onended="showUpNext();">
         <source src="<?php echo $video->getFilePath(); ?>" type="video/mp4">
     </video>
 </div>

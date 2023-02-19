@@ -59,6 +59,8 @@
             $description = $video->getDescription();
             //Get episode number
             $episodeNumber = $video->getEpisodeNumber();
+            //Check if video has been seen
+            $hasSeen = $video->hasSeen($this->username) ? "<i class='fas fa-check-circle seen'></i>" : "";
 
             //Return video container
             return "<a href='watch.php?id=$id'>
@@ -69,6 +71,7 @@
                                     <h4>$episodeNumber. $name</h4>
                                     <span>$description</span>
                                 </div>
+                                $hasSeen
                             </div>
                         </div>
                     </a>";

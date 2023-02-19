@@ -62,6 +62,18 @@
             return $this->sqlData["episode"];
         }
 
+        //Get season number
+        public function getSeasonNumber(){
+            //Return season number
+            return $this->sqlData["season"];
+        }
+
+        //Get entity id
+        public function getEntityId(){
+            //Return entity id
+            return $this->sqlData["entityId"];
+        }
+
         //Increment views
         public function incrementViews(){
             //query to increment views
@@ -70,6 +82,63 @@
             $query->bindValue(":id", $this->getId());
             //Execute query
             $query->execute();
+        }
+
+        //Get season and episode
+        public function getSeasonAndEpisode(){
+            //Check if video is a movie
+            if($this->isMovie()){
+                //Return empty string
+                return;
+            }
+
+            $season = $this->getSeasonNumber();
+            $episode = $this->getEpisodeNumber();
+
+            //Return season and episode
+            return "Season $season, Episode $episode";
+        }
+
+        //Check if video is a movie
+        public function isMovie(){
+            //Check if season and episode are 1
+            return $this->sqlData["isMovie"] == 1;
+        }
+
+        //Check if video is in progress
+        public function isInProgress($username){
+            //Query
+            $query = $this->con->prepare("SELECT * FROM videoProgress
+            WHERE videoId=:videoId AND username=:username
+            AND finished=0");
+
+            //Bind values
+            $query->bindValue(":videoId", $this->getId());
+            $query->bindValue(":username", $username);
+
+            //Execute query
+            $query->execute();
+
+            //Check if there is a result
+            return $query->rowCount() != 0;
+        }
+
+        //Check if video has been seen
+        public function hasSeen($username){
+            //Query
+            $query = $this->con->prepare("SELECT * FROM videoProgress
+            WHERE videoId=:videoId AND username=:username
+            AND finished=1");
+
+            //Bind values
+            $query->bindValue(":videoId", $this->getId());
+            $query->bindValue(":username", $username);
+
+            //Execute query
+            $query->execute();
+
+            //Check if there is a result
+            return $query->rowCount() != 0;
         }
 
     }
