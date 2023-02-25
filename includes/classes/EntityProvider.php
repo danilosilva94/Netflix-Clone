@@ -124,5 +124,32 @@ class EntityProvider {
         // Return result array
         return $result;
     }
+
+    // Get all entities for movies
+    public static function getSearchEntities($con, $term) {
+        // Create sql query
+        $sql = "SELECT * FROM entities 
+        WHERE name LIKE CONCAT('%', :term, '%')
+        LIMIT 30";
+
+        // Prepare sql query
+        $query = $con->prepare($sql);
+
+        // Bind limit to sql query
+        $query->bindValue(":term", $term);
+        // Execute sql query
+        $query->execute();
+
+        // Create result array
+        $result = array();
+        // Loop through all rows
+        while($row = $query->fetch(PDO::FETCH_ASSOC)) {
+            // Add new entity to result array
+            $result[] = new Entity($con, $row);
+        }
+
+        // Return result array
+        return $result;
+    }
 }
 ?>
