@@ -10,6 +10,51 @@ class PreviewProvider {
         $this->username = $username;
     }
 
+    // Create preview video for categories
+    public function createCategoryPreviewVideo($categoryId){
+        //Get TV show entity
+        $entitiesArray = EntityProvider::getEntities($this->con, $categoryId, 1);
+
+        //Check if entity is not null
+        if(sizeof($entitiesArray) == 0) {
+            //Show error message
+            ErrorMessage::show("No movies to display");
+        }
+
+        //Return preview video
+        return $this->createPreviewVideo($entitiesArray[0]);
+    }
+
+    // Create preview video for tv shows
+    public function crateTVShowPreviewVideo(){
+        //Get TV show entity
+        $entitiesArray = EntityProvider::getTVShowEntities($this->con, null, 1);
+
+        //Check if entity is not null
+        if(sizeof($entitiesArray) == 0) {
+            //Show error message
+            ErrorMessage::show("No TV shows to display");
+        }
+
+        //Return preview video
+        return $this->createPreviewVideo($entitiesArray[0]);
+    }
+
+    // Create preview video for movies
+    public function crateMoviesPreviewVideo(){
+        //Get TV show entity
+        $entitiesArray = EntityProvider::getMoviesEntities($this->con, null, 1);
+
+        //Check if entity is not null
+        if(sizeof($entitiesArray) == 0) {
+            //Show error message
+            ErrorMessage::show("No movies to display");
+        }
+
+        //Return preview video
+        return $this->createPreviewVideo($entitiesArray[0]);
+    }
+
     // Create preview video
     public function createPreviewVideo($entity) {
         // Check if entity is null

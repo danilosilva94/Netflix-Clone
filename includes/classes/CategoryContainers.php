@@ -29,6 +29,48 @@ class CategoryContainers {
         return $html . "</div>";
     }
 
+    //Show all categories
+    public function showTVShowCategories() {
+        //Get all categories
+        $query = $this->con->prepare("SELECT * FROM categories");
+        //Execute query
+        $query->execute();
+
+        //Create html
+        $html = "<div class='previewCategories'>
+                    <h1>TV Shows</h1>";
+
+        //Loop through all categories
+        while($row = $query->fetch(PDO::FETCH_ASSOC)) {
+            //Get category and add to html
+            $html .= $this->getCategoryHtml($row, null, true, false);
+        }
+
+        //Return html
+        return $html . "</div>";
+    }
+
+    //Show all categories
+    public function showMoviesCategories() {
+        //Get all categories
+        $query = $this->con->prepare("SELECT * FROM categories");
+        //Execute query
+        $query->execute();
+
+        //Create html
+        $html = "<div class='previewCategories'>
+                    <h1>Movies</h1>";
+
+        //Loop through all categories
+        while($row = $query->fetch(PDO::FETCH_ASSOC)) {
+            //Get category and add to html
+            $html .= $this->getCategoryHtml($row, null, false, true);
+        }
+
+        //Return html
+        return $html . "</div>";
+    }
+
     //Show specific category
     public function showCategory($categoryId, $title = null) {
         //Get category
@@ -65,9 +107,11 @@ class CategoryContainers {
         }
         else if($tvShows) {
             // Get tv show entities
+            $entities = EntityProvider::getTVShowEntities($this->con, $categoryId, 30);
         }
         else {
             // Get movie entities
+            $entities = EntityProvider::getMoviesEntities($this->con, $categoryId, 30);
         }
 
         //If there are no entities, return
