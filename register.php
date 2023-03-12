@@ -87,16 +87,16 @@
                 value="<?php getInputValue("email"); ?>"
                 required>
 
-                <?php echo $account->getError(Constants::$emailsDoNotMatch); ?>
+                <?php echo $account->getError(Constants::$emailsDontMatch); ?>
                 <input type="email" name="email2" placeholder="Confirm email" 
                 value="<?php getInputValue("email2"); ?>"
                 required>
 
-                <?php echo $account->getError(Constants::$passwordCharacters); ?>
+                <?php echo $account->getError(Constants::$passwordLength); ?>
                 <?php echo $account->getError(Constants::$passwordNotAlphanumeric); ?>
                 <input type="password" name="password" placeholder="Password" required>
 
-                <?php echo $account->getError(Constants::$passwordsDoNotMatch); ?>
+                <?php echo $account->getError(Constants::$passwordsDontMatch); ?>
                 <input type="password" name="password2" placeholder="Confirm password" required>
 
                 <input type="submit" name="submitButton" value="SUBMIT">

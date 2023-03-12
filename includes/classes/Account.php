@@ -4,12 +4,29 @@ class Account {
     private $con;
     private $errorArray = array();
 
-    // Constructor
     public function __construct($con) {
         $this->con = $con;
     }
 
-    // Register
+    public function updateDetails($fn, $ln, $em, $un) {
+        $this->validateFirstName($fn);
+        $this->validateLastName($ln);
+        $this->validateNewEmail($em, $un);
+
+        if(empty($this->errorArray)) {
+            $query = $this->con->prepare("UPDATE users SET firstName=:fn, lastName=:ln, email=:em
+                                            WHERE username=:un");
+            $query->bindValue(":fn", $fn);
+            $query->bindValue(":ln", $ln);
+            $query->bindValue(":em", $em);
+            $query->bindValue(":un", $un);
+
+            return $query->execute();
+        }
+
+        return false;
+    }
+
     public function register($fn, $ln, $un, $em, $em2, $pw, $pw2) {
         $this->validateFirstName($fn);
         $this->validateLastName($ln);
@@ -17,143 +34,163 @@ class Account {
         $this->validateEmails($em, $em2);
         $this->validatePasswords($pw, $pw2);
 
-        //Check if there are no errors
         if(empty($this->errorArray)) {
-            // Insert into database
             return $this->insertUserDetails($fn, $ln, $un, $em, $pw);
-        } else {
-            return false;
         }
+
+        return false;
     }
 
-    // Login
-    public function login($un, $pw){
-        //Compare password with encrypted password
+    public function login($un, $pw) {
         $pw = md5($pw);
 
-        //Check database for username and password
-        $query = $this->con->prepare("SELECT * FROM users WHERE username = :un AND password = :pw");
-
-        // Fill in the placeholders
+        $query = $this->con->prepare("SELECT * FROM users WHERE username=:un AND password=:pw");
         $query->bindValue(":un", $un);
         $query->bindValue(":pw", $pw);
 
-        // Execute the query
         $query->execute();
 
-        //Check number of rows
-        if($query->rowCount() == 1){
+        if($query->rowCount() == 1) {
             return true;
-        } else {
-            array_push($this->errorArray, Constants::$loginFailed);
-            return false;
         }
+
+        array_push($this->errorArray, Constants::$loginFailed);
+        return false;
     }
 
-    // Insert user details into database
     private function insertUserDetails($fn, $ln, $un, $em, $pw) {
-        // Encrypt password
-        $encryptedPw = md5($pw);
-        // Default profile picture
-
-        $query = $this->con->prepare("INSERT INTO users (firstName, lastName, username, email, password) VALUES (:fn, :ln, :un, :em, :pw)");
-        // Fill in the placeholders
+        
+        $pw = hash("sha512", $pw);
+        
+        $query = $this->con->prepare("INSERT INTO users (firstName, lastName, username, email, password)
+                                        VALUES (:fn, :ln, :un, :em, :pw)");
         $query->bindValue(":fn", $fn);
         $query->bindValue(":ln", $ln);
         $query->bindValue(":un", $un);
         $query->bindValue(":em", $em);
-        $query->bindValue(":pw", $encryptedPw);
+        $query->bindValue(":pw", $pw);
 
-        // Execute the query
         return $query->execute();
     }
 
-    // Validate first name
     private function validateFirstName($fn) {
         if(strlen($fn) < 2 || strlen($fn) > 25) {
             array_push($this->errorArray, Constants::$firstNameCharacters);
         }
     }
 
-    //Validate last name
     private function validateLastName($ln) {
         if(strlen($ln) < 2 || strlen($ln) > 25) {
             array_push($this->errorArray, Constants::$lastNameCharacters);
         }
     }
 
-    //Validate username
     private function validateUsername($un) {
-        if(strlen($un) < 5 || strlen($un) > 25) {
+        if(strlen($un) < 2 || strlen($un) > 25) {
             array_push($this->errorArray, Constants::$usernameCharacters);
             return;
         }
 
-        // Check if username exists
-        $query = $this->con->prepare("SELECT * FROM users WHERE username = :un");
-        //Fill in the placeholder
+        $query = $this->con->prepare("SELECT * FROM users WHERE username=:un");
         $query->bindValue(":un", $un);
-        //Execute the query
-        $query->execute();
 
-        //Count the number of rows returned
+        $query->execute();
+        
         if($query->rowCount() != 0) {
-            //Username already exists
             array_push($this->errorArray, Constants::$usernameTaken);
         }
     }
 
-    //Validate emails
     private function validateEmails($em, $em2) {
         if($em != $em2) {
-            array_push($this->errorArray, Constants::$emailsDoNotMatch);
+            array_push($this->errorArray, Constants::$emailsDontMatch);
             return;
         }
 
-        // Check if email is valid
         if(!filter_var($em, FILTER_VALIDATE_EMAIL)) {
             array_push($this->errorArray, Constants::$emailInvalid);
             return;
         }
 
-        // Check if email exists
-        $query = $this->con->prepare("SELECT * FROM users WHERE email = :em");
-        //Fill in the placeholder
+        $query = $this->con->prepare("SELECT * FROM users WHERE email=:em");
         $query->bindValue(":em", $em);
-        //Execute the query
-        $query->execute();
 
-        //Count the number of rows returned
+        $query->execute();
+        
         if($query->rowCount() != 0) {
-            //Email already exists
             array_push($this->errorArray, Constants::$emailTaken);
         }
     }
 
-    //Validate passwords
-    private function validatePasswords($pw, $pw2) {
-        if($pw != $pw2) {
-            array_push($this->errorArray, Constants::$passwordsDoNotMatch);
+    private function validateNewEmail($em, $un) {
+
+        if(!filter_var($em, FILTER_VALIDATE_EMAIL)) {
+            array_push($this->errorArray, Constants::$emailInvalid);
             return;
         }
 
-        if(preg_match('/[^A-Za-z0-9]/', $pw)) {
-            array_push($this->errorArray, Constants::$passwordNotAlphanumeric);
-            return;
-        }
+        $query = $this->con->prepare("SELECT * FROM users WHERE email=:em AND username != :un");
+        $query->bindValue(":em", $em);
+        $query->bindValue(":un", $un);
 
-        if(strlen($pw) < 5 || strlen($pw) > 30) {
-            array_push($this->errorArray, Constants::$passwordCharacters);
-            return;
+        $query->execute();
+        
+        if($query->rowCount() != 0) {
+            array_push($this->errorArray, Constants::$emailTaken);
         }
     }
 
-    // Get error
+    private function validatePasswords($pw, $pw2) {
+        if($pw != $pw2) {
+            array_push($this->errorArray, Constants::$passwordsDontMatch);
+            return;
+        }
+
+        if(strlen($pw) < 5 || strlen($pw) > 25) {
+            array_push($this->errorArray, Constants::$passwordLength);
+        }
+    }
+
     public function getError($error) {
         if(in_array($error, $this->errorArray)) {
             return "<span class='errorMessage'>$error</span>";
         }
     }
 
+    public function getFirstError() {
+        if(!empty($this->errorArray)) {
+            return $this->errorArray[0];
+        }
+    }
+
+    public function updatePassword($oldPw, $pw, $pw2, $un) {
+        $this->validateOldPassword($oldPw, $un);
+        $this->validatePasswords($pw, $pw2);
+
+        if(empty($this->errorArray)) {
+            $query = $this->con->prepare("UPDATE users SET password=:pw WHERE username=:un");
+            $pw = hash("sha512", $pw);
+            $query->bindValue(":pw", $pw);
+            $query->bindValue(":un", $un);
+
+            return $query->execute();
+        }
+
+        return false;
+    }
+
+    public function validateOldPassword($oldPw, $un) {
+        $pw = md5($oldPw);
+
+        $query = $this->con->prepare("SELECT * FROM users WHERE username=:un AND password=:pw");
+        $query->bindValue(":un", $un);
+        $query->bindValue(":pw", $pw);
+
+        $query->execute();
+
+        if($query->rowCount() == 0) {
+            array_push($this->errorArray, Constants::$passwordIncorrect);
+        }
+    }
+
 }
-?>
