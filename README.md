@@ -1,1 +1,2 @@
 # Netflix-Clone
+This is a Netflix clone project built using HTML, CSS, JavaScript, and PHP. The project emulates the look and feel of Netflix, allowing users to browse through movies and TV shows, create and manage their account, and stream media content. It is an excellent example of how front-end and back-end technologies can work together to create a seamless user experience.
