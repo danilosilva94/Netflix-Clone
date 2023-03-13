@@ -60,7 +60,7 @@ class Account {
 
     private function insertUserDetails($fn, $ln, $un, $em, $pw) {
         
-        $pw = hash("sha512", $pw);
+        $pw = md5($pw);
         
         $query = $this->con->prepare("INSERT INTO users (firstName, lastName, username, email, password)
                                         VALUES (:fn, :ln, :un, :em, :pw)");
@@ -169,7 +169,7 @@ class Account {
 
         if(empty($this->errorArray)) {
             $query = $this->con->prepare("UPDATE users SET password=:pw WHERE username=:un");
-            $pw = hash("sha512", $pw);
+            $pw = md5($pw);
             $query->bindValue(":pw", $pw);
             $query->bindValue(":un", $un);
 
