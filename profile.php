@@ -1,8 +1,10 @@
 <?php
 require_once("includes/header.php");
+require_once("includes/paypalConfig.php");
 require_once("includes/classes/Account.php");
 require_once("includes/classes/FormSanitizer.php");
 require_once("includes/classes/Constants.php");
+require_once("includes/classes/BillingDetails.php");
 
 //Check if user is logged in
 $user = new User($con, $userLoggedIn);
@@ -10,6 +12,7 @@ $user = new User($con, $userLoggedIn);
 //Message variables
 $detailsMessage = "";
 $passwordMessage = "";
+$subscriptionMessage = "";
 
 //Check if save details button was pressed
 if (isset($_POST["saveDetailsButton"])) {
@@ -65,6 +68,48 @@ if (isset($_POST["savePasswordButton"])) {
     }
 }
 
+//Execute billing agreement
+if(isset($_GET['success']) && $_GET['success'] == 'true'){
+    $token = $_GET['token'];
+    $agreement = new \PayPal\Api\Agreement();
+
+    //Keep error message as default in case of error
+    $subscriptionMessage = "<div class='alertError'>
+                                        Something went wrong!
+                                    </div>";
+
+    try{
+        //Execute agreement
+        $agreement->execute($token, $apiContext);
+
+        //Get billing result
+        $result = BillingDetails::insertDetails($con, $agreement, $token, $userLoggedIn);
+
+        //Set is subscribed to true if $result is true
+        $result = $result && $user->setIsSubscribed(1);
+
+        //Check if $result is true and display success message
+        if($result){
+            $subscriptionMessage = "<div class='alertSuccess'>
+                                        Subscription successful!
+                                    </div>";
+        }
+
+    } catch(PayPal\Exception\PayPalConnectionException $ex){
+        echo $ex->getCode();
+        echo $ex->getData();
+        die($ex);
+    } catch(Exception $ex){
+        die($ex);
+    }
+
+} else if(isset($_GET['success']) && $_GET['success'] == 'false'){
+    // Show error message
+    $subscriptionMessage = "<div class='alertError'>
+                                Something went wrong!
+                            </div>";
+}
+
 ?>
 
 <div class="settingsContainer column">
@@ -116,6 +161,23 @@ if (isset($_POST["savePasswordButton"])) {
 
         </form>
 
+    </div>
+
+    <div class="formSection">
+        <h2>Subscription</h2>
+
+        <div class="message">
+            <?php echo $subscriptionMessage; ?>
+        </div>
+
+        <?php
+            //Check if user is subscribed
+            if ($user->getIsSubscribed()) {
+                echo "<h3>You are subscribed! Go to Paypal to cancel.</h3>";
+            } else {
+                echo "<a href='billing.php'>Subscribe to Movies!</a>";
+            }
+        ?>
     </div>
 
 </div>

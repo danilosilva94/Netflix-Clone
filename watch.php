@@ -9,6 +9,15 @@
         ErrorMessage::show("No id passed to page");
     }
 
+    //Create user
+    $user = new User($con, $userLoggedIn);
+
+    //Check if user is subscribed
+    if(!$user->getIsSubscribed()) {
+        ErrorMessage::show("You must be subscribed to watch videos
+        <a href='profile.php'>Click here to subscribe!</a>");
+    }
+
     //Create video object
     $video = new Video($con, $_GET["id"]);
 

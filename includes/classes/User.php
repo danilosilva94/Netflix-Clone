@@ -35,5 +35,29 @@
         public function getEmail(){
             return $this->sqlData["email"];
         }
+
+        //Get is subscribed
+        public function getIsSubscribed(){
+            return $this->sqlData["isSubscribed"];
+        }
+
+        //Update subscription column in database
+        public function setIsSubscribed($value){
+            //Prepare query
+            $query = $this->con->prepare("UPDATE users SET isSubscribed=:isSubscribed WHERE username=:username");
+
+            //Bind values
+            $query->bindValue(":isSubscribed", $value);
+            $query->bindValue(":username", $this->getUsername());
+
+            //Execute query
+            if($query->execute()){
+                //Update sql data
+                $this->sqlData["isSubscribed"] = $value;
+                return true;
+            } else {
+                return false;
+            }
+        }
     }
 ?>
